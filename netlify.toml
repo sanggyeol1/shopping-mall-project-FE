@@ -1,4 +1,5 @@
 [[redirects]]
-from = "/*"
-to = "/index.html"
-status = 200
+  from = "/api/*"
+  to = "http://shopping-mall-project-env.eba-2pcijpxf.us-east-2.elasticbeanstalk.com/api/:splat"
+  status = 200
+  force = true
