@@ -80,7 +80,7 @@ const Navbar = ({ user }) => {
       )}
       <div className="nav-header">
         <div className="burger-menu hide">
-          <FontAwesomeIcon icon={faBars} onClick={() => setWidth(250)} />
+          <FontAwesomeIcon icon={faBars} onClick={() => {setWidth(250); console.log(user)}} />
         </div>
 
         <div>
