@@ -3,14 +3,17 @@ import * as types from "../constants/product.constants";
 import { toast } from "react-toastify";
 import { commonUiActions } from "./commonUiAction";
 
-const getProductList = (query) => async (dispatch) => { 
-  try{
-    dispatch({type:types.PRODUCT_GET_REQUEST})
-    const response = await api.get("/product")
-    if(response.status!==200) throw new Error(response.error)
-    dispatch({type:types.PRODUCT_GET_SUCCESS, payload:response.data.data})
+const getProductList = (query) => async (dispatch) => {
+  try {
+    dispatch({ type: types.PRODUCT_GET_REQUEST })
+    const response = await api.get("/product", {
+      params: { ...query }
+    })
+    console.log("eeee",response)
+    if (response.status !== 200) throw new Error(response.error)
+    dispatch({ type: types.PRODUCT_GET_SUCCESS, payload: response.data })
     console.log(response.data.data)
-  }catch(error){
+  } catch (error) {
     dispatch({ type: types.PRODUCT_GET_FAIL, payload: error.error })
   }
 };
@@ -20,12 +23,12 @@ const createProduct = (formData) => async (dispatch) => {
   try {
     dispatch({ type: types.PRODUCT_CREATE_REQUEST })
     const response = await api.post("/product", formData)
-    if(response.status!==200) throw new Error(response.error)
-    dispatch({type:types.PRODUCT_CREATE_SUCCESS,})
+    if (response.status !== 200) throw new Error(response.error)
+    dispatch({ type: types.PRODUCT_CREATE_SUCCESS, })
     dispatch(commonUiActions.showToastMessage("상품 생성 완료", "success"))
   } catch (error) {
     dispatch({ type: types.PRODUCT_CREATE_FAIL, payload: error.error })
-    dispatch(commonUiActions.showToastMessage(error.error,"error"))
+    dispatch(commonUiActions.showToastMessage(error.error, "error"))
   }
 };
 const deleteProduct = (id) => async (dispatch) => { };

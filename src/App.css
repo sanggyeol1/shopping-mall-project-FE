@@ -129,6 +129,7 @@ body{
 
 .card:hover{
   transform: scale(1.1);
+  transition: all 0.5s ease;
   z-index: 1;
 }
 .hide{
