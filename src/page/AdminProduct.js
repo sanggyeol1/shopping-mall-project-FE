@@ -35,7 +35,7 @@ const AdminProduct = () => {
 
   //상품리스트 가져오기 (url쿼리 맞춰서)
   useEffect(() => {
-    dispatch(productActions.getProductList({...searchQuery}))
+    dispatch(productActions.getProductList({ ...searchQuery }))
   }, [query])
 
 
@@ -51,12 +51,15 @@ const AdminProduct = () => {
   }, [searchQuery]);
 
   const deleteItem = (id) => {
-    //아이템 삭제하가ㅣ
+    dispatch(productActions.deleteProduct(id));
   };
 
   const openEditForm = (product) => {
     //edit모드로 설정하고
+    setMode("edit")
     // 아이템 수정다이얼로그 열어주기
+    dispatch({ type: types.SET_SELECTED_PRODUCT, payload: product })
+    setShowDialog(true)
   };
 
   const handleClickNewItem = () => {
@@ -68,7 +71,7 @@ const AdminProduct = () => {
 
   const handlePageClick = ({ selected }) => {
     //  쿼리에 페이지값 바꿔주기
-    setSearchQuery({searchQuery, page:selected+1})
+    setSearchQuery({ searchQuery, page: selected + 1 })
   };
 
   return (
@@ -97,7 +100,7 @@ const AdminProduct = () => {
           onPageChange={handlePageClick}
           pageRangeDisplayed={5}//몇개의페이지를 보내줄지
           pageCount={totalPageNum}//전체페이지
-          forcePage={searchQuery.page-1} // 1페이지면 2임 여긴 한개씩 +1 해야함
+          forcePage={searchQuery.page - 1} // 1페이지면 2임 여긴 한개씩 +1 해야함
           previousLabel="< previous"
           renderOnZeroPageCount={null}
           pageClassName="page-item"

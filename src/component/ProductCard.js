@@ -6,9 +6,10 @@ const ProductCard = ({product}) => {
   const navigate = useNavigate();
   const showProduct = (id) => {
     // 상품 디테일 페이지로 가기
+    navigate(`/product/${id}`)
   };
   return (
-    <div className="card" onClick={() => showProduct("hard_code")}>
+    <div className="card" onClick={() => showProduct(product._id)}>
       <img
         src={product.image}
         alt=""

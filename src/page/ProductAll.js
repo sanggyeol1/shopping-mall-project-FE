@@ -10,22 +10,25 @@ const ProductAll = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch();
   const error = useSelector((state) => state.product.error);
-  const products = useSelector((state) => state.product.productList);
+  const productList = useSelector((state) => state.product.productList);
   const [query, setQuery] = useSearchParams();
+  const name = query.get("name");
 
   useEffect(() => {
-    dispatch(productActions.getProductList(Object.fromEntries([...query])));
-  }, [dispatch, query]);
+    dispatch(productActions.getProductList({name}));
+  }, [query]);
 
   return (
     <Container>
       <Row>
         {
-          products?.map((product) => (
-            <Col md={3} sm={12}>
-              <ProductCard product={product} />
-            </Col>
-          ))
+          productList.length > 0 ?
+            productList?.map((product) => (
+              <Col key={product.id} md={3} sm={12}>
+                <ProductCard product={product} />
+              </Col>
+            )) :
+            <h3>상품이 없습니다.</h3>
         }
       </Row>
     </Container>
