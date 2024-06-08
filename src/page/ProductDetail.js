@@ -11,7 +11,10 @@ import "../style/productDetail.style.css";
 
 const ProductDetail = () => {
   const dispatch = useDispatch();
-
+  const selectedProduct = useSelector((state) => state.product.selectedProduct);
+  const loading = useSelector((state) => state.product.loading);
+  const error = useSelector((state) => state.product.error);
+  const {user} = useSelector((state)=>state.user)
   const [size, setSize] = useState("");
   const { id } = useParams();
   const [sizeError, setSizeError] = useState(false);
@@ -20,11 +23,22 @@ const ProductDetail = () => {
 
   const addItemToCart = () => {
     //사이즈를 아직 선택안했다면 에러
+    if(size === ""){
+      setSizeError(true)
+      return
+    }
     // 아직 로그인을 안한유저라면 로그인페이지로
+    if(!user){
+      navigate('/login')
+    }
     // 카트에 아이템 추가하기
+    dispatch(cartActions.addToCart({id, size}))
   };
+  
   const selectSize = (value) => {
     // 사이즈 추가하기
+    if(sizeError) setSizeError(false)
+    setSize(value)
   };
 
   //카트에러가 있으면 에러메세지 보여주기
@@ -32,23 +46,26 @@ const ProductDetail = () => {
   //에러가 있으면 에러메세지 보여주기
 
   useEffect(() => {
-    //상품 디테일 정보 가져오기
+    dispatch(productActions.getProductDetail(id));
+    console.log(selectedProduct)
   }, [id]);
+  
 
+  
   return (
     <Container className="product-detail-card">
       <Row>
         <Col sm={6}>
           <img
-            src="https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2F3a%2F04%2F3a04ededbfa6a7b535e0ffa30474853fc95d2e81.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url[file:/product/fullscreen]"
+            src={selectedProduct?.image}
             className="w-100"
             alt="image"
           />
         </Col>
         <Col className="product-info-area" sm={6}>
-          <div className="product-info">리넨셔츠</div>
-          <div className="product-info">₩ 45,000</div>
-          <div className="product-info">샘플설명</div>
+          <div className="product-info">{selectedProduct?.name}</div>
+          <div className="product-info">₩ {selectedProduct?.price}</div>
+          <div className="product-info">{selectedProduct?.description}</div>
 
           <Dropdown
             className="drop-down size-drop-down"
@@ -65,9 +82,21 @@ const ProductDetail = () => {
               {size === "" ? "사이즈 선택" : size.toUpperCase()}
             </Dropdown.Toggle>
 
-            <Dropdown.Menu className="size-drop-down">
-              <Dropdown.Item>M</Dropdown.Item>
-            </Dropdown.Menu>
+            {selectedProduct?.stock && (
+              <Dropdown.Menu className="size-drop-down">
+                {Object.keys(selectedProduct.stock).map((item) =>
+                  selectedProduct.stock[item] > 0 ? (
+                    <Dropdown.Item key={item} eventKey={item}>
+                      {item.toUpperCase()}
+                    </Dropdown.Item>
+                  ) : (
+                    <Dropdown.Item key={item} eventKey={item} disabled>
+                      {item.toUpperCase()}
+                    </Dropdown.Item>
+                  )
+                )}
+              </Dropdown.Menu>
+            )}
           </Dropdown>
           <div className="warning-message">
             {sizeError && "사이즈를 선택해주세요."}
