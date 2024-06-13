@@ -80,7 +80,7 @@ const Navbar = ({ user }) => {
       )}
       <div className="nav-header">
         <div className="burger-menu hide">
-          <FontAwesomeIcon icon={faBars} onClick={() => {setWidth(250); console.log(user)}} />
+          <FontAwesomeIcon icon={faBars} onClick={() => { setWidth(250); console.log(user) }} />
         </div>
 
         <div>
@@ -98,16 +98,15 @@ const Navbar = ({ user }) => {
                 {!isMobile && <span style={{ cursor: "pointer" }}>로그인</span>}
               </div>
             )}
-            <div onClick={() => navigate("/cart")} className="nav-icon">
+            <div onClick={() => { user ? navigate("/cart") : navigate('/login') }} className="nav-icon">
               <FontAwesomeIcon icon={faShoppingBag} />
               {!isMobile && (
-                <span style={{ cursor: "pointer" }}>{`쇼핑백(${
-                  cartItemCount || 0
-                })`}</span>
+                <span style={{ cursor: "pointer" }}>{`쇼핑백(${cartItemCount || 0
+                  })`}</span>
               )}
             </div>
             <div
-              onClick={() => navigate("/account/purchase")}
+              onClick={() => { user ? navigate("/account/purchase") : navigate('/login') }}
               className="nav-icon"
             >
               <FontAwesomeIcon icon={faBox} />
