@@ -1,0 +1,24 @@
+/* Google Fonts 임포트 */
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+
+.menu {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  font-family: 'Lobster', cursive; /* Google Fonts에서 가져온 글씨체 */
+}
+
+.menu li {
+  margin: 10px 0;
+}
+
+.menu a {
+  text-decoration: none;
+  color: #1616169b !important;
+  font-size: 1.5em; /* 글씨 크기 조정 */
+  transition: color 0.3s;
+}
+
+.menu a:hover {
+  color: #007bff; /* 링크에 마우스를 올렸을 때 색상 변경 */
+}

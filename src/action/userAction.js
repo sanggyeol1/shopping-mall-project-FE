@@ -6,7 +6,6 @@ const loginWithToken = () => async (dispatch) => {
   try{
     dispatch({type:types.LOGIN_WITH_TOKEN_REQUEST})
     const response = await api.get("/user/me")
-    console.log(response)
     dispatch({
       type:types.LOGIN_WITH_TOKEN_SUCCESS,
       payload:response.data

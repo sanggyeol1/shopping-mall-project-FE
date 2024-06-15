@@ -93,6 +93,7 @@ body{
 .card{
   border:none !important;
   margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .choice{
@@ -128,9 +129,10 @@ body{
 }
 
 .card:hover{
-  transform: scale(1.1);
+  transform: scale(1.05);
   transition: all 0.5s ease;
   z-index: 1;
+  cursor: pointer;
 }
 .hide{
   visibility:hidden
@@ -275,4 +277,11 @@ body{
   justify-content: flex-end;
   margin-top: 20px;
   margin-right: 20px;
+  text-decoration: none;
+  color: black;
 }
+
+.link-area:hover{
+  color: black;
+}
+

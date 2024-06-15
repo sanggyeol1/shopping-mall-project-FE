@@ -1,0 +1,15 @@
+.comment-item {
+    position: relative;
+    padding-right: 50px; /* 여유 공간 확보 */
+  }
+  
+  .delete-button {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+*{
+    font-size: 1.1rem;
+}
