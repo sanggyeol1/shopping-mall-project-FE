@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { currencyFormat } from "../utils/number";
+import "../style/productCard.style.css"
 
 const ProductCard = ({product}) => {
   const navigate = useNavigate();
@@ -14,8 +15,9 @@ const ProductCard = ({product}) => {
         src={product.image}
         alt=""
       />
-      <div>{product.name}</div>
-      <div>\ {product.price}</div>
+      <div className="product-sku"><strong>{product.sku}</strong></div>
+      <div className="product-name">{product.name}</div>
+      <div className="product-price">\ {product.price}</div>
     </div>
   );
 };

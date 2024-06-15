@@ -36,10 +36,10 @@ const getOrder = (query) => async (dispatch) => {
   try {
     dispatch({ type: types.GET_ORDER_REQUEST })
     const response = await api.get("/order")
-    console.log("order?", response)
     dispatch({ type: types.GET_ORDER_SUCCESS, payload: response.data })
   } catch (err) {
     dispatch({ type: types.GET_ORDER_FAIL, payload: err.error })
+    dispatch(commonUiActions.showToastMessage(err, "error"));
   }
 };
 

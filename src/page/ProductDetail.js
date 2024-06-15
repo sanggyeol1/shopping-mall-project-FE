@@ -3,82 +3,74 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Container, Row, Col, Button, Dropdown } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { productActions } from "../action/productAction";
-import { ColorRing } from "react-loader-spinner";
 import { cartActions } from "../action/cartAction";
-import { commonUiActions } from "../action/commonUiAction";
-import { currencyFormat } from "../utils/number";
+import { commentActions } from "../action/commentAction";
 import "../style/productDetail.style.css";
+import CommentSection from "../component/CommentSection";
 
 const ProductDetail = () => {
   const dispatch = useDispatch();
   const selectedProduct = useSelector((state) => state.product.selectedProduct);
   const loading = useSelector((state) => state.product.loading);
   const error = useSelector((state) => state.product.error);
-  const {user} = useSelector((state)=>state.user)
-  const [size, setSize] = useState("");
+  const { user } = useSelector((state) => state.user);
+  const comments = useSelector((state) => state.comment.comments); // 올바른 셀렉터
   const { id } = useParams();
+  const [size, setSize] = useState("");
   const [sizeError, setSizeError] = useState(false);
 
   const navigate = useNavigate();
 
   const addItemToCart = () => {
-    //사이즈를 아직 선택안했다면 에러
-    if(size === ""){
-      setSizeError(true)
-      return
+    if (size === "") {
+      setSizeError(true);
+      return;
     }
-    // 아직 로그인을 안한유저라면 로그인페이지로
-    if(!user){
-      navigate('/login')
+    if (!user) {
+      navigate('/login');
     }
-    // 카트에 아이템 추가하기
-    dispatch(cartActions.addToCart({id, size}))
+    dispatch(cartActions.addToCart({ id, size }));
   };
-  
+
   const selectSize = (value) => {
-    // 사이즈 추가하기
-    if(sizeError) setSizeError(false)
-    setSize(value)
+    if (sizeError) setSizeError(false);
+    setSize(value);
   };
 
-  //카트에러가 있으면 에러메세지 보여주기
 
-  //에러가 있으면 에러메세지 보여주기
 
   useEffect(() => {
     dispatch(productActions.getProductDetail(id));
-    console.log(selectedProduct)
-  }, [id]);
-  
+    dispatch(commentActions.getCommentsByProduct(id));
+  }, [id, dispatch]);
 
-  
+  const addComment = (comment) => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    dispatch(commentActions.createComment({ content: comment, productId: id }));
+  };
+
+  const deleteComment = (commentId) => {
+    dispatch(commentActions.deleteComment(commentId, id));
+  };
+
+
   return (
     <Container className="product-detail-card">
       <Row>
         <Col sm={6}>
-          <img
-            src={selectedProduct?.image}
-            className="w-100"
-            alt="image"
-          />
+          <img src={selectedProduct?.image} className="w-100" alt="image" />
         </Col>
         <Col className="product-info-area" sm={6}>
-          <div className="product-info">{selectedProduct?.name}</div>
-          <div className="product-info">₩ {selectedProduct?.price}</div>
-          <div className="product-info">{selectedProduct?.description}</div>
+          <div className="product-info-price-ko">구매가</div>
+          <div className="product-info-price">₩ {selectedProduct?.price}</div>
+          <div className="product-info-name">{selectedProduct?.name}</div>
+          <div className="product-info-des">{selectedProduct?.description}</div>
 
-          <Dropdown
-            className="drop-down size-drop-down"
-            title={size}
-            align="start"
-            onSelect={(value) => selectSize(value)}
-          >
-            <Dropdown.Toggle
-              className="size-drop-down"
-              variant={sizeError ? "outline-danger" : "outline-dark"}
-              id="dropdown-basic"
-              align="start"
-            >
+          <Dropdown className="drop-down size-drop-down" title={size} align="start" onSelect={(value) => selectSize(value)}>
+            <Dropdown.Toggle className="size-drop-down" variant={sizeError ? "outline-danger" : "outline-dark"} id="dropdown-basic" align="start">
               {size === "" ? "사이즈 선택" : size.toUpperCase()}
             </Dropdown.Toggle>
 
@@ -106,6 +98,7 @@ const ProductDetail = () => {
           </Button>
         </Col>
       </Row>
+      <CommentSection comments={comments} addComment={addComment} deleteComment={deleteComment} currentUserId={user?._id}/>
     </Container>
   );
 };

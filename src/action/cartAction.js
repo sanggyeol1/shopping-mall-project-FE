@@ -7,7 +7,6 @@ const addToCart =
       try {
         dispatch({ type: types.ADD_TO_CART_REQUEST })
         const response = await api.post("/cart", { productId: id, size: size, qty: 1 })
-        console.log("rrrrrr", response)
         dispatch({ type: types.ADD_TO_CART_SUCCESS, payload: response.data.cartItemQty })
         dispatch(commonUiActions.showToastMessage("카트에 상품이 추가되었습니다.", "success"))
       } catch (err) {
@@ -20,7 +19,6 @@ const getCartList = () => async (dispatch) => {
   try {
     dispatch({ type: types.GET_CART_LIST_REQUEST })
     const response = await api.get("/cart")
-    console.log("res", response)
     dispatch({ type: types.GET_CART_LIST_SUCCESS, payload: response.data.data })
   } catch (err) {
     dispatch({ type: types.GET_CART_LIST_FAIL, payload: err.error })

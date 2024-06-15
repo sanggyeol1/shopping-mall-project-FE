@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../action/userAction";
+import '../style/nav.style.css'
 
 const Navbar = ({ user }) => {
   const dispatch = useDispatch();
@@ -18,14 +19,11 @@ const Navbar = ({ user }) => {
   const isMobile = window.navigator.userAgent.indexOf("Mobile") !== -1;
   const [showSearchBox, setShowSearchBox] = useState(false);
   const menuList = [
-    "여성",
-    "Divided",
-    "남성",
-    "신생아/유아",
-    "아동",
-    "H&M HOME",
-    "Sale",
-    "지속가능성",
+    "Son",
+    "Lee Kang In",
+    "Kim Min Jae",
+    "Hwang Hee Chan",
+    "Kids",
   ];
   let [width, setWidth] = useState(0);
   let navigate = useNavigate();
@@ -69,7 +67,7 @@ const Navbar = ({ user }) => {
 
         <div className="side-menu-list" id="menu-list">
           {menuList.map((menu, index) => (
-            <button key={index}>{menu}</button>
+            <button onClick={()=> {navigate(`?name=${menu}`)}} key={index}>{menu}</button>
           ))}
         </div>
       </div>
@@ -89,19 +87,19 @@ const Navbar = ({ user }) => {
               <div onClick={logout} className="nav-icon">
                 <FontAwesomeIcon icon={faUser} />
                 {!isMobile && (
-                  <span style={{ cursor: "pointer" }}>로그아웃</span>
+                  <span style={{ cursor: "pointer" }}>Logout</span>
                 )}
               </div>
             ) : (
               <div onClick={() => navigate("/login")} className="nav-icon">
                 <FontAwesomeIcon icon={faUser} />
-                {!isMobile && <span style={{ cursor: "pointer" }}>로그인</span>}
+                {!isMobile && <span style={{ cursor: "pointer" }}>Login</span>}
               </div>
             )}
             <div onClick={() => { user ? navigate("/cart") : navigate('/login') }} className="nav-icon">
               <FontAwesomeIcon icon={faShoppingBag} />
               {!isMobile && (
-                <span style={{ cursor: "pointer" }}>{`쇼핑백(${cartItemCount || 0
+                <span style={{ cursor: "pointer" }}>{`Cart(${cartItemCount || 0
                   })`}</span>
               )}
             </div>
@@ -110,7 +108,7 @@ const Navbar = ({ user }) => {
               className="nav-icon"
             >
               <FontAwesomeIcon icon={faBox} />
-              {!isMobile && <span style={{ cursor: "pointer" }}>내 주문</span>}
+              {!isMobile && <span style={{ cursor: "pointer" }}>Mypage</span>}
             </div>
             {isMobile && (
               <div className="nav-icon" onClick={() => setShowSearchBox(true)}>
@@ -123,14 +121,14 @@ const Navbar = ({ user }) => {
 
       <div className="nav-logo">
         <Link to="/">
-          <img width={100} src="/image/hm-logo.png" alt="hm-logo.png" />
+          <img width={200} src="/image/soccerkitlogo.png" alt="#" />
         </Link>
       </div>
       <div className="nav-menu-area">
         <ul className="menu">
           {menuList.map((menu, index) => (
             <li key={index}>
-              <a href="#">{menu}</a>
+              <a href={`?name=${menu}`}>{menu}</a>
             </li>
           ))}
         </ul>
@@ -139,7 +137,7 @@ const Navbar = ({ user }) => {
             <FontAwesomeIcon icon={faSearch} />
             <input
               type="text"
-              placeholder="제품검색"
+              placeholder="search"
               onKeyPress={onCheckEnter}
             />
           </div>
