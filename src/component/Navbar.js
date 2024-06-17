@@ -67,7 +67,7 @@ const Navbar = ({ user }) => {
 
         <div className="side-menu-list" id="menu-list">
           {menuList.map((menu, index) => (
-            <button onClick={()=> {navigate(`?name=${menu}`)}} key={index}>{menu}</button>
+            <button onClick={()=> {navigate(`/?name=${menu}`)}} key={index}>{menu}</button>
           ))}
         </div>
       </div>
@@ -128,7 +128,7 @@ const Navbar = ({ user }) => {
         <ul className="menu">
           {menuList.map((menu, index) => (
             <li key={index}>
-              <a href={`?name=${menu}`}>{menu}</a>
+              <a href={`/?name=${menu}`}>{menu}</a>
             </li>
           ))}
         </ul>
